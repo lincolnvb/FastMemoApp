@@ -52,16 +52,28 @@ public class AlunoDAO extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery(sql,null);
 
-        List<Aluno> aluno = new ArrayList<Aluno>();
+        List<Aluno> alunos = new ArrayList<Aluno>();
         while (c.moveToNext()){
-            String nome = c.getString(c.getColumnIndex("nome"));
-            String endereco = c.getString(c.getColumnIndex("nome"));
-            String nome = c.getString(c.getColumnIndex("nome"));
-            String nome = c.getString(c.getColumnIndex("nome"));
-            String nome = c.getString(c.getColumnIndex("nome"));
+            Aluno aluno = new Aluno();
+            aluno.setId(c.getLong(c.getColumnIndex("id")));
+            aluno.setNome(c.getString(c.getColumnIndex("nome")));
+            aluno.setEndereco(c.getString(c.getColumnIndex("endereco")));
+            aluno.setTelefone(c.getString(c.getColumnIndex("telefone")));
+            aluno.setSite(c.getString(c.getColumnIndex("site")));
+            aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
 
+            alunos.add(aluno);
         }
+        c.close();
 
-        return null;
+        return alunos;
+    }
+
+    public void deleta(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] params = {aluno.getId().toString()};
+        db.delete("Alunos", "id = ?", params);
+
     }
 }
